@@ -9,19 +9,22 @@ public class LoanAccount extends Account {
 
     @Override
     public boolean withdraw(double amount) {
-        System.out.println("Cannot withdraw money from Loan Account");
         return false;
     }
 
     @Override
-    public boolean requestLoan(double amount) {
+    public boolean validateLoan(double amount) {
         if(amount > (loan * 5) / 100) {
             System.out.println("Loan request denied. " +
                     "Loan Account holder can't get more than 5% of the current loan");
             return false;
         }
 
-        loan += amount;
         return true;
+    }
+
+    @Override
+    public void increaseYear() {
+        // Requires to do nothing
     }
 }

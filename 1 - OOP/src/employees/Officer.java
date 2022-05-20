@@ -8,8 +8,8 @@ public class Officer extends Employee {
     }
 
     @Override
-    public boolean approveLoan(Account account) {
-        // TODO
-        return false;
+    public boolean approveLoan(Account account, Double amount) {
+        account.addLoan(amount);
+        return true;
     }
 }

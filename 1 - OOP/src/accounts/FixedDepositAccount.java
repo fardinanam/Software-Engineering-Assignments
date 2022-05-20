@@ -28,12 +28,7 @@ public class FixedDepositAccount extends Account {
 
     @Override
     public boolean withdraw(double amount) {
-        if(LocalDate.now().isBefore(dateOfCreation.plusYears(1))) {
-            System.out.println("WITHDRAWAL FAILED: Fixed Account" +
-                    "is not yet matured to withdraw money");
-            return false;
-        } else if (balance < amount) {
-            System.out.println("WITHDRAWAL FAILED: Insufficient Balance");
+        if(elapsedYear < 1 || balance < amount) {
             return false;
         }
 
@@ -42,15 +37,24 @@ public class FixedDepositAccount extends Account {
     }
 
     @Override
-    public boolean requestLoan(double amount) {
+    public boolean validateLoan(double amount) {
         if(loan + amount > 100000) {
             System.out.println("Fixed deposit account holder can't get" +
                     "more loans than 100,000$");
             return false;
         }
 
-        loan += amount;
         return true;
+    }
+
+    @Override
+    public void increaseYear() {
+        elapsedYear++;
+        double newBalance = balance - loan;
+        newBalance += newBalance * interestRateOnDeposit / 100 - serviceCharge -
+                loan * interestRateOnLoan / 100;
+        newBalance += loan;
+        balance = newBalance;
     }
 
     public static void setInterestRateOnDeposit(double interestRateOnDeposit) {

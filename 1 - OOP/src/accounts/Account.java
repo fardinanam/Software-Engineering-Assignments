@@ -1,16 +1,27 @@
 package accounts;
 
-import java.time.LocalDate;
-
 public abstract class Account {
     protected String name;
     protected double balance;
     protected double loan;
     protected double serviceCharge;
     protected static double interestRateOnLoan;
-    protected LocalDate dateOfCreation;
+    protected int elapsedYear;
 
-    public enum AccountTypes {FIXED, STUDENT, SAVINGS, LOAN};
+    public enum AccountTypes {
+        FIXED, STUDENT, SAVINGS, LOAN;
+
+        @Override
+        public String toString() {
+            switch (this) {
+                case LOAN: return "LOAN";
+                case FIXED: return "FIXED";
+                case SAVINGS: return "SAVINGS";
+                case STUDENT: return "STUDENT";
+            }
+            return null;
+        }
+    }
 
     public Account(String name) {
         this.name = name;
@@ -18,7 +29,7 @@ public abstract class Account {
         this.loan = 0;
         this.serviceCharge = 500;
         interestRateOnLoan = 10;
-        this.dateOfCreation = LocalDate.now();
+        this.elapsedYear = 0;
     }
 
     public void deposit(double amount) {
@@ -36,14 +47,23 @@ public abstract class Account {
      * @param amount requested loan amount
      * @return true, if successful. False, if unsuccessful
      */
-    public abstract boolean requestLoan(double amount);
+    public abstract boolean validateLoan(double amount);
 
     public void query() {
         System.out.print("Current balance " + balance + '$');
         if(loan > 0) {
-            System.out.print(", loan " + loan + "$\n");
+            System.out.print(", loan " + loan + "$");
         }
+
+        System.out.println();
     }
+
+    public void addLoan(double amount) {
+        balance += amount;
+        loan += amount;
+    }
+
+    public abstract void increaseYear();
 
     @Override
     public int hashCode() {
@@ -52,8 +72,10 @@ public abstract class Account {
 
     @Override
     public boolean equals(Object obj) {
-        if(obj.getClass() != getClass()) {
-            throw new ClassCastException("Class must be of Account type");
+        if(obj instanceof String) {
+            return this.name.equals(obj);
+        } else if(!(obj instanceof Account)) {
+            throw new ClassCastException("Class must be of String or Account type");
         }
         
         return this.name.equals(((Account) obj).name);
@@ -69,9 +91,5 @@ public abstract class Account {
 
     public double getBalance() {
         return balance;
-    }
-
-    public double getLoan() {
-        return loan;
     }
 }

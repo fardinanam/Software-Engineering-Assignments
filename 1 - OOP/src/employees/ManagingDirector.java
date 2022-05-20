@@ -11,9 +11,9 @@ public class ManagingDirector extends Employee {
     }
 
     @Override
-    public boolean approveLoan(Account account) {
-    // TODO
-        return false;
+    public boolean approveLoan(Account account, Double amount) {
+        account.addLoan(amount);
+        return true;
     }
 
     @Override
@@ -33,7 +33,7 @@ public class ManagingDirector extends Employee {
     }
 
     @Override
-    public void seeInternalFunds() {
-        // TODO
+    public boolean canSeeInternalFunds() {
+        return true;
     }
 }
