@@ -7,17 +7,17 @@ public abstract class Account {
     protected double balance;
     protected double loan;
     protected double serviceCharge;
-    protected double interestRateOnDeposit;
-    protected double interestRateOnLoan;
+    protected static double interestRateOnLoan;
     protected LocalDate dateOfCreation;
+
+    public enum AccountTypes {FIXED, STUDENT, SAVINGS, LOAN};
 
     public Account(String name) {
         this.name = name;
         this.balance = 0;
         this.loan = 0;
         this.serviceCharge = 500;
-        this.interestRateOnLoan = 10;
-        this.interestRateOnDeposit = 0;
+        interestRateOnLoan = 10;
         this.dateOfCreation = LocalDate.now();
     }
 
@@ -43,6 +43,20 @@ public abstract class Account {
         if(loan > 0) {
             System.out.print(", loan " + loan + "$\n");
         }
+    }
+
+    @Override
+    public int hashCode() {
+        return name.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(obj.getClass() != getClass()) {
+            throw new ClassCastException("Class must be of Account type");
+        }
+        
+        return this.name.equals(((Account) obj).name);
     }
 
     public String getName() {

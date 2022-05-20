@@ -1,10 +1,12 @@
 package accounts;
 
 public class SavingsAccount extends Account {
+    private static double interestRateOnDeposit;
+
     public SavingsAccount(String name, double initialDeposit) {
         super(name);
         this.balance = initialDeposit;
-        this.interestRateOnDeposit = 10;
+        interestRateOnDeposit = 10;
     }
 
     @Override
@@ -32,5 +34,9 @@ public class SavingsAccount extends Account {
 
         loan += amount;
         return true;
+    }
+
+    public static void setInterestRateOnDeposit(double interestRateOnDeposit) {
+        SavingsAccount.interestRateOnDeposit = interestRateOnDeposit;
     }
 }

@@ -3,6 +3,8 @@ package accounts;
 import java.time.LocalDate;
 
 public class FixedDepositAccount extends Account {
+    private static double interestRateOnDeposit;
+
     public FixedDepositAccount(String name, double initialDeposit) {
         super(name);
         if(initialDeposit < 100000) {
@@ -11,7 +13,7 @@ public class FixedDepositAccount extends Account {
         }
 
         this.balance = initialDeposit;
-        this.interestRateOnDeposit = 15;
+        interestRateOnDeposit = 15;
     }
 
     @Override
@@ -49,5 +51,9 @@ public class FixedDepositAccount extends Account {
 
         loan += amount;
         return true;
+    }
+
+    public static void setInterestRateOnDeposit(double interestRateOnDeposit) {
+        FixedDepositAccount.interestRateOnDeposit = interestRateOnDeposit;
     }
 }
