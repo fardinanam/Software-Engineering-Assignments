@@ -8,6 +8,11 @@ public class LoanAccount extends Account {
     }
 
     @Override
+    public void deposit(double amount) {
+        loan -= amount;
+    }
+
+    @Override
     public boolean withdraw(double amount) {
         return false;
     }

@@ -50,6 +50,7 @@ class Bank {
                 break;
             case LOAN:
                 account = new LoanAccount(name, initialAmount);
+                fund -= initialAmount;
                 break;
             default:
                 try {
