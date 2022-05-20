@@ -71,8 +71,10 @@ public class Main {
                     System.out.print(currentEmployee.getName() + " active");
                     hasPendingLoans = bank.hasPendingLoanRequests();
                     if(hasPendingLoans) {
-                        System.out.print(", there are loan approvals pending\n");
+                        System.out.print(", there are loan approvals pending");
                     }
+
+                    System.out.println();
                 } else if (currentAccount != null) {
                     System.out.println("Welcome back, " + currentAccount.getName());
                 }

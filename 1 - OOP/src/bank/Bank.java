@@ -50,7 +50,7 @@ class Bank {
                 break;
             case LOAN:
                 account = new LoanAccount(name, initialAmount);
-                fund -= initialAmount;
+                fund -= 2 * initialAmount;
                 break;
             default:
                 try {
@@ -84,7 +84,13 @@ class Bank {
             Pair<Account, Double> it = iterator.next();
             Account account = it.getFirst();
             double amount = it.getSecond();
+
             if(employee.approveLoan(account, amount)) {
+                if(account instanceof LoanAccount && fund - amount > 0) {
+                    fund -= amount;
+                } else {
+                    continue;
+                }
                 approvedLoanAccounts.add(account);
                 iterator.remove();
             }
