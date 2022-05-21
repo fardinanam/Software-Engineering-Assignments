@@ -1,13 +1,7 @@
 package bank;
 
 import accounts.Account;
-import employees.Cashier;
 import employees.Employee;
-import employees.ManagingDirector;
-import employees.Officer;
-
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Scanner;
 
 public class Main {
@@ -31,8 +25,6 @@ public class Main {
         }
 
         System.out.print(" created\n");
-
-        boolean hasPendingLoans = false;
 
         while(true) {
             String input = scanner.nextLine();

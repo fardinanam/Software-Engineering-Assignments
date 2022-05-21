@@ -14,13 +14,13 @@ class Bank {
     private final HashSet<Account> accounts;
     private final HashSet<Employee> employees;
     private final Queue<Pair<Account, Double>> loanRequests;
-    private double fund;
+    private double internalFunds;
     private Employee loggedInEmployee;
     private Account loggedInAccount;
     private int elapsedYear;
 
     private Bank() {
-        fund = 1000000;
+        internalFunds = 1000000;
         accounts = new HashSet<>();
         employees = new HashSet<>();
         loanRequests = new LinkedList<>();
@@ -76,7 +76,7 @@ class Bank {
                 break;
             case LOAN:
                 account = new LoanAccount(name, initialAmount);
-                fund -= 2 * initialAmount;
+                internalFunds -= 2 * initialAmount;
                 break;
             default:
                 try {
@@ -93,7 +93,7 @@ class Bank {
             return false;
         }
 
-        fund += initialAmount;
+        internalFunds += initialAmount;
         loggedInAccount = account;
         accounts.add(account);
         return true;
@@ -146,7 +146,7 @@ class Bank {
             Account account = request.getFirst();
             double amount = request.getSecond();
 
-            if(account instanceof LoanAccount && fund - amount < 0) {
+            if(account instanceof LoanAccount && internalFunds - amount < 0) {
                 continue;
             }
 
@@ -223,7 +223,7 @@ class Bank {
             return "Please login to an account first.";
         }
         loggedInAccount.deposit(amount);
-        fund += amount;
+        internalFunds += amount;
 
         return amount + "$ deposited; Current balance " +
                 loggedInAccount.getBalance() + '$';
@@ -241,7 +241,7 @@ class Bank {
         }
 
         if(loggedInAccount.withdraw(amount)) {
-            fund -= amount;
+            internalFunds -= amount;
             message.append(amount).append("$ withdrawn; ");
         } else {
             message.append("Invalid Transaction; ");
@@ -283,7 +283,7 @@ class Bank {
         }
 
         if(loggedInEmployee.canSeeInternalFunds()) {
-            return "Internal fund is " + fund + '$';
+            return "Internal fund is " + internalFunds + '$';
         } else {
             return "You don’t have permission for this operation";
         }
