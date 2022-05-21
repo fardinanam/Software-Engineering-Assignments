@@ -3,6 +3,7 @@ package employees;
 import accounts.Account;
 
 public abstract class Employee {
+    public enum EmployeeTypes { MANAGING_DIRECTOR, OFFICER, CASHIER }
     protected String name;
 
     public Employee(String name) {
@@ -16,7 +17,7 @@ public abstract class Employee {
     public abstract boolean approveLoan(Account account, Double amount);
 
     public boolean changeInterestRate(double newInterestRate, Account.AccountTypes accountType) {
-        System.out.println("You don’t have permission for this operation");
+//        System.out.println("You don’t have permission for this operation");
         return false;
     }
 

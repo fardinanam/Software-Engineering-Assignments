@@ -3,6 +3,8 @@ package bank;
 import accounts.*;
 import employees.Cashier;
 import employees.Employee;
+import employees.ManagingDirector;
+import employees.Officer;
 import kotlin.Pair;
 
 import java.util.*;
@@ -11,14 +13,19 @@ class Bank {
     private static Bank bank = null;
     private final HashSet<Account> accounts;
     private final HashSet<Employee> employees;
-    private final LinkedList<Pair<Account, Double>> loanRequests;
+    private final Queue<Pair<Account, Double>> loanRequests;
     private double fund;
+    private Employee loggedInEmployee;
+    private Account loggedInAccount;
+    private int elapsedYear;
 
     private Bank() {
         fund = 1000000;
         accounts = new HashSet<>();
         employees = new HashSet<>();
         loanRequests = new LinkedList<>();
+        loggedInEmployee = null;
+        loggedInAccount = null;
     }
 
     public static Bank getInstance() {
@@ -29,8 +36,27 @@ class Bank {
         return bank;
     }
 
-    public void addEmployee(Employee employee) {
+    public boolean addEmployee(String name, Employee.EmployeeTypes employeeType) {
+        Employee employee;
+
+        if(employees.contains(new Officer(name)))
+            return false;
+        switch (employeeType) {
+            case MANAGING_DIRECTOR:
+                employee = new ManagingDirector(name);
+                break;
+            case OFFICER:
+                employee = new Officer(name);
+                break;
+            case CASHIER:
+                employee = new Cashier(name);
+                break;
+            default:
+                return false;
+        }
+
         employees.add(employee);
+        return true;
     }
 
     public boolean createAccount(String name, Account.AccountTypes accountType, double initialAmount) {
@@ -68,44 +94,109 @@ class Bank {
         }
 
         fund += initialAmount;
+        loggedInAccount = account;
         accounts.add(account);
         return true;
+    }
+
+    /**
+     * @param name of Employee or Account holder
+     * @return Message to the user
+     */
+    public String login(String name) {
+        loggedInAccount = getAccount(name);
+        loggedInEmployee = getEmployee(name);
+        StringBuilder message = new StringBuilder();
+
+        if(loggedInEmployee != null) {
+            message.append(loggedInEmployee.getName()).append(" active");
+            if(hasPendingLoanRequests()) {
+                message.append(", there are loan approvals pending");
+            }
+        } else if (loggedInAccount != null) {
+            message.append("Welcome back, ").append(loggedInAccount.getName());
+        } else {
+            return "Invalid Name";
+        }
+
+        return message.toString();
     }
 
     public boolean hasPendingLoanRequests() {
         return !loanRequests.isEmpty();
     }
 
-    public ArrayList<Account> approveLoans(Employee employee) {
-        ArrayList<Account> approvedLoanAccounts = new ArrayList<>();
-        ListIterator<Pair<Account, Double>> iterator = loanRequests.listIterator();
+    /**
+     * If there are loan requests in the queue, and an MD or Officer is logged in
+     * then loans are approved based on the account types and available fund.
+     * @return message on success
+     */
+    public String approveLoans() {
+        StringBuilder message = new StringBuilder();
 
-        while (iterator.hasNext()) {
-            Pair<Account, Double> it = iterator.next();
-            Account account = it.getFirst();
-            double amount = it.getSecond();
+        if(loggedInEmployee == null) {
+            return "Please login to an employee account first";
+        }
 
-            if(employee.approveLoan(account, amount)) {
-                if(account instanceof LoanAccount && fund - amount > 0) {
-                    fund -= amount;
-                } else {
-                    continue;
-                }
-                approvedLoanAccounts.add(account);
-                iterator.remove();
+        if(loanRequests.isEmpty())
+            return "Currently there is no loan request";
+
+        while (!loanRequests.isEmpty()) {
+            Pair<Account, Double> request = loanRequests.peek();
+            Account account = request.getFirst();
+            double amount = request.getSecond();
+
+            if(account instanceof LoanAccount && fund - amount < 0) {
+                continue;
+            }
+
+            if(loggedInEmployee.approveLoan(account, amount)) {
+                message.append("Loan for ").append(account.getName()).append(" has been approved\n");
+                loanRequests.remove();
             }
         }
 
-        return approvedLoanAccounts;
+        return message.toString();
     }
 
-    public void increaseYear() {
-        for(Account account : accounts) {
-            account.increaseYear();
+    public String changeInterestRate(double changingRate, Account.AccountTypes accountType) {
+        if(loggedInEmployee == null) {
+            return "Please login to an employee account first";
+        }
+
+        if(loggedInEmployee.changeInterestRate( changingRate, accountType)) {
+            return "Interest rate of " + accountType.toString() + " accounts have been changed to " + changingRate;
+        } else {
+            return "You don't have permission for this operation";
         }
     }
 
-    public Employee getEmployee(String name) {
+    public String lookup(String name) {
+        if(loggedInEmployee == null) {
+            return "Please login to an employee account first";
+        }
+
+        Account account = getAccount(name);
+        if(account == null) {
+            return "There is no account of " + name;
+        }
+
+        return name + "'s current balance " + loggedInEmployee.lookUp(account) + '$';
+    }
+
+    public String increaseYear() {
+        elapsedYear++;
+        if(loggedInAccount != null || loggedInEmployee != null) {
+            return "Logout first";
+        }
+        for(Account account : accounts) {
+            account.increaseYear();
+        }
+
+        return elapsedYear + " year passed";
+    }
+
+    private Employee getEmployee(String name) {
         for(Employee employee : employees) {
             if(employee.getName().equals(name))
                 return employee;
@@ -114,11 +205,7 @@ class Bank {
         return null;
     }
 
-    public HashSet<Employee> getEmployees() {
-        return employees;
-    }
-
-    public Account getAccount(String name) {
+    private Account getAccount(String name) {
         for(Account account : accounts) {
             if(account.getName().equals(name))
                 return account;
@@ -127,38 +214,103 @@ class Bank {
         return null;
     }
 
-    public HashSet<Account> getAccounts() {
-        return accounts;
-    }
-
-    public void deposit(Account account, double amount) {
-        account.deposit(amount);
+    /**
+     * @param amount to be deposited into the logged in account
+     * @return Confirmation message of successful or unsuccessful deposit
+     */
+    public String deposit(double amount) {
+        if(loggedInAccount == null) {
+            return "Please login to an account first.";
+        }
+        loggedInAccount.deposit(amount);
         fund += amount;
+
+        return amount + "$ deposited; Current balance " +
+                loggedInAccount.getBalance() + '$';
     }
 
-    public boolean withdraw(Account account, double amount) {
-        if(account.withdraw(amount)) {
+    /**
+     * @param amount to be withdrawn
+     * @return Confirmation message of successful or unsuccessful withdrawal
+     */
+    public String withdraw(double amount) {
+        StringBuilder message = new StringBuilder();
+        if(loggedInAccount == null) {
+            message.append("Please login to an account first.");
+            return message.toString();
+        }
+
+        if(loggedInAccount.withdraw(amount)) {
             fund -= amount;
-            return true;
-        }
-
-        return false;
-    }
-
-    public boolean requestLoan(Account account, double amount) {
-        if(account.validateLoan(amount)) {
-            loanRequests.add(new Pair<>(account, amount));
-            return true;
-        }
-
-        return false;
-    }
-
-    public void seeInternalFunds(Employee employee) {
-        if(employee.canSeeInternalFunds()) {
-            System.out.println("Internal fund is " + fund + '$');
+            message.append(amount).append("$ withdrawn; ");
         } else {
-            System.out.println("You don’t have permission for this operation");
+            message.append("Invalid Transaction; ");
         }
+
+        message.append("Current balance ").append(loggedInAccount.getBalance()).append("$");
+        return message.toString();
+    }
+
+    public String requestLoan(double amount) {
+        if(loggedInAccount == null) {
+            return "Please login to an account first.";
+        }
+
+        if(loggedInAccount.validateLoan(amount)) {
+            loanRequests.add(new Pair<>(loggedInAccount, amount));
+            return "Loan request successful, sent for approval";
+        }
+
+        return "Loan request unsuccessful";
+    }
+
+    public String[] getEmployeeNames() {
+        int noOfEmployees = employees.size();
+        String[] employeeNames = new String[noOfEmployees];
+
+        int i = 0;
+        for(Employee employee : employees) {
+            employeeNames[i] = employee.getName();
+            i++;
+        }
+
+        return employeeNames;
+    }
+
+    public String seeInternalFunds() {
+        if(loggedInEmployee == null) {
+            return "Please login to an employee account first";
+        }
+
+        if(loggedInEmployee.canSeeInternalFunds()) {
+            return "Internal fund is " + fund + '$';
+        } else {
+            return "You don’t have permission for this operation";
+        }
+    }
+
+    public void query() {
+        if(loggedInAccount == null) {
+            System.out.println("Please login to an account first.");
+        }
+
+        loggedInAccount.query();
+    }
+
+    /**
+     * Logs out currently logged in employee or account holder
+     * @return message
+     */
+    public String logout() {
+        String message = "Already not logged in";
+        if(loggedInAccount != null) {
+            message = "Transaction Closed for " + loggedInAccount.getName();
+            loggedInAccount = null;
+        } else if(loggedInEmployee != null) {
+            message = "Operations for " + loggedInEmployee.getName() + " closed";
+            loggedInEmployee = null;
+        }
+
+        return message;
     }
 }

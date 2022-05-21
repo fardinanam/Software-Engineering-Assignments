@@ -9,7 +9,7 @@ public class Cashier extends Employee {
 
     @Override
     public boolean approveLoan(Account account, Double amount) {
-        System.out.println("You don’t have permission for this operation\n");
+        System.out.println("You don’t have permission for this operation");
         return false;
     }
 }
