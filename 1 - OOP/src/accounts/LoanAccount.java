@@ -30,6 +30,8 @@ public class LoanAccount extends Account {
 
     @Override
     public void increaseYear() {
-        // Requires to do nothing
+        double principle = loan / (1 + (elapsedYear * interestRateOnLoan) / 100);
+        elapsedYear++;
+        loan = principle + (principle * elapsedYear * interestRateOnLoan) / 100;
     }
 }

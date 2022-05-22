@@ -185,7 +185,6 @@ class Bank {
     }
 
     public String increaseYear() {
-        elapsedYear++;
         if(loggedInAccount != null || loggedInEmployee != null) {
             return "Logout first";
         }
@@ -193,6 +192,7 @@ class Bank {
             account.increaseYear();
         }
 
+        elapsedYear++;
         return elapsedYear + " year passed";
     }
 

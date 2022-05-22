@@ -2,7 +2,8 @@ package bank;
 
 import accounts.Account;
 import employees.Employee;
-import java.util.Scanner;
+
+import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
@@ -48,8 +49,13 @@ public class Main {
                 }
 
                 if(bank.createAccount(name, accountType, initialAmount)) {
-                    System.out.println(accountType + " account for " + name + " Created; " +
-                            "Initial balance " + initialAmount + '$');
+                    if(accountType == Account.AccountTypes.LOAN) {
+                        System.out.println(accountType + " account for " + name + " Created; " +
+                                "Initial loan " + initialAmount + '$');
+                    } else {
+                        System.out.println(accountType + " account for " + name + " Created; " +
+                                "Initial balance " + initialAmount + '$');
+                    }
                 }
             } else if (request.equals("open") && command.length == 2) {
                 String name = command[1];
@@ -114,6 +120,9 @@ public class Main {
                 System.out.println(bank.increaseYear());
             } else if (request.equals("close") && command.length == 1) {
                 System.out.println(bank.logout());
+            } else if (request.equals("exit")) {
+                System.out.println("Bank Closed");
+                break;
             } else {
                 System.out.println("Invalid Input");
             }
