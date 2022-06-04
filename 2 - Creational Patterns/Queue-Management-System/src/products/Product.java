@@ -24,6 +24,12 @@ public class Product {
             yearlyCost += ((CommunicationSystem) part).getYearlyCost();
     }
 
+    public void addAll(LinkedList<Part> parts) {
+        for(Part part : parts) {
+            add(part);
+        }
+    }
+
     public void show() {
         System.out.println("\nOrder is ready as follows:");
 

@@ -6,9 +6,9 @@ import products.Product;
  * Abstract Builder
  */
 public interface SystemBuilder {
-    void addDisplay();
+    void addDisplay() throws Exception;
     void addControlUnit();
-    void addCommunicationSystem();
+    void addCommunicationSystem() throws Exception;
     void addApplication();
     Product getProduct();
 }

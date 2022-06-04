@@ -1,5 +1,9 @@
 package builders;
 
+import factories.CommunicationSystemFactory;
+import factories.DisplayFactory;
+import factories.ICommunicationSystemFactory;
+import factories.IDisplayFactory;
 import parts.*;
 import products.Product;
 
@@ -18,10 +22,9 @@ public class Deluxe implements SystemBuilder {
     }
 
     @Override
-    public void addDisplay() {
-        for (int i = 0; i < numberOfDisplayUnits; i++) {
-            product.add(new LcdDisplay());
-        }
+    public void addDisplay() throws Exception {
+        IDisplayFactory displayFactory = new DisplayFactory();
+        product.addAll(displayFactory.getDisplays("LCD", numberOfDisplayUnits));
     }
 
     @Override
@@ -30,11 +33,9 @@ public class Deluxe implements SystemBuilder {
     }
 
     @Override
-    public void addCommunicationSystem() {
-        if (communicationSystemType.equalsIgnoreCase("WIFI"))
-            product.add(new WiFi());
-        else if (communicationSystemType.equalsIgnoreCase("MOBILE_SERVICE"))
-            product.add(new MobileService());
+    public void addCommunicationSystem() throws Exception {
+        ICommunicationSystemFactory communicationSystemFactory = new CommunicationSystemFactory();
+        product.add(communicationSystemFactory.getCommunicationSystem(communicationSystemType));
     }
 
     @Override
