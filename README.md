@@ -14,3 +14,10 @@
 
 
 - [Problem-2 Solution](https://github.com/fardinanam/Software-Engineering-Assignments/tree/master/2%20-%20Creational%20Patterns/Code-Editor/src) : (Abstract factory method, Singleton)
+
+## 3 - Structural Patterns
+**Adapter, Decorator, Composite**
+- [Problem Specifications]()
+
+- [Problem-3a Solution]() : (Adapter)
+- [Problem-3b Solution]() : (Decorator)
