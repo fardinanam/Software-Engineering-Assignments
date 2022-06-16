@@ -20,4 +20,4 @@
 - [Problem Specifications](https://github.com/fardinanam/Software-Engineering-Assignments/blob/3daa887ee5a38f01e2e8b39c4c1c86a7f33110ee/3%20-%20Structural%20Design%20Patterns/Assignment%203%20CSE%20308%20Jan%2022.pdf)
 
 - [Problem-3a Solution](https://github.com/fardinanam/Software-Engineering-Assignments/tree/master/3%20-%20Structural%20Design%20Patterns/Calculate-Sum) : (Adapter)
-- [Problem-3b Solution]() : (Decorator)
+- [Problem-3b Solution](https://github.com/fardinanam/Software-Engineering-Assignments/tree/master/3%20-%20Structural%20Design%20Patterns/Burger-Shop/src) : (Decorator)

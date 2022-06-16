@@ -1,9 +1,10 @@
 package items;
 
+/**
+ * Base food item interface
+ */
 public interface Item {
-    public abstract double getPrice();
-
-    @Override
-    public abstract String toString();
+    public double getPrice();
+    public String toString();
 }
 

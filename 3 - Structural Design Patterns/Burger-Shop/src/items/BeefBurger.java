@@ -1,19 +1,13 @@
 package items;
 
-public class BeefBurger extends Burger {
-    private double price;
-
-    public BeefBurger() {
-        price = 350;
-    }
-
+public class BeefBurger implements Item {
     @Override
     public double getPrice() {
-        return price;
+        return 350;
     }
 
     @Override
     public String toString() {
-        return "Beef items.Burger";
+        return "Beef Burger";
     }
 }
