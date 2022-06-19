@@ -6,7 +6,7 @@
  - [Problem Specifications](https://github.com/fardinanam/Software-Engineering-Assignments/blob/master/1%20-%20OOP/Offline1.pdf)
  - [Solution](https://github.com/fardinanam/Software-Engineering-Assignments/tree/master/1%20-%20OOP/src)
 
-    - UML Diagram: ![](static\BankManagementSystemUML.png)
+    - UML Diagram: ![](static/BankManagementSystemUML.png)
 
 ## 2 - Creational Design Patterns
 **Factory Method, Abstract factory method, Builder pattern, Singleton**
@@ -14,13 +14,11 @@
 
 - [Problem-1 Solution](https://github.com/fardinanam/Software-Engineering-Assignments/tree/master/2%20-%20Creational%20Patterns/Queue-Management-System/src) : (Builder Pattern, Factory Method)
 
-    - UML Diagram: 
-![](static\QueueManagementSystemUML.png)
+    - UML Diagram: ![](static/QueueManagementSystemUML.png)
 
 - [Problem-2 Solution](https://github.com/fardinanam/Software-Engineering-Assignments/tree/master/2%20-%20Creational%20Patterns/Code-Editor/src) : (Abstract factory method, Singleton)
 
-    - UML Diagram: 
-![](static\CodeEditorUML.png)
+    - UML Diagram: ![](static/CodeEditorUML.png)
 
 ## 3 - Structural Design Patterns
 **Adapter, Decorator**
@@ -28,10 +26,8 @@
 
 - [Problem-3a Solution](https://github.com/fardinanam/Software-Engineering-Assignments/tree/master/3%20-%20Structural%20Design%20Patterns/Calculate-Sum) : (Adapter)
 
-    - UML Diagram: 
-![](static\SumCalculatorUML.png)
+    - UML Diagram: ![](static/SumCalculatorUML.png)
 
 - [Problem-3b Solution](https://github.com/fardinanam/Software-Engineering-Assignments/tree/master/3%20-%20Structural%20Design%20Patterns/Burger-Shop/src) : (Decorator)
 
-    - UML Diagram: 
-![](static\BurgerShopUML.png)
+    - UML Diagram: ![](static/BurgerShopUML.png)
