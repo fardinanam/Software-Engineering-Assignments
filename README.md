@@ -31,3 +31,8 @@
 - [Problem-3b Solution](https://github.com/fardinanam/Software-Engineering-Assignments/tree/master/3%20-%20Structural%20Design%20Patterns/Burger-Shop/src) : (Decorator)
 
     - UML Diagram: ![](static/BurgerShopUML.png)
+
+## 4 - Unit Testing
+**JUnit**
+- [Problem Specifications]()
+- [Solution]()
