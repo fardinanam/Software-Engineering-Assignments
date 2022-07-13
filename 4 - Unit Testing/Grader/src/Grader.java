@@ -1,5 +1,3 @@
-import java.nio.file.FileAlreadyExistsException;
-
 public class Grader {
     public char letterGrade(String creditText, String marksText) {
         int credit = Integer.parseInt(creditText);

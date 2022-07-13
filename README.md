@@ -34,5 +34,5 @@
 
 ## 4 - Unit Testing
 **JUnit**
-- [Problem Specifications]()
-- [Solution]()
+- [Problem Specifications](https://github.com/fardinanam/Software-Engineering-Assignments/blob/547962d6c273c91dd22641e98433114e0311e26e/4%20-%20Unit%20Testing/Offline%204.pdf)
+- [Solution](https://github.com/fardinanam/Software-Engineering-Assignments/blob/547962d6c273c91dd22641e98433114e0311e26e/4%20-%20Unit%20Testing/Grader/test/GraderTest.java)
