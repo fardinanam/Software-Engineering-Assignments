@@ -1,7 +1,21 @@
 public class Grader {
-    public char letterGrade(String creditText, String marksText) {
-        int credit = Integer.parseInt(creditText);
-        double marks = Double.parseDouble(marksText);
+    public char letterGrade(String creditText, String marksText) throws IllegalArgumentException {
+        int credit;
+        double marks;
+
+        try {
+            credit = Integer.parseInt(creditText);
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid input. Credit should be int");
+            return 0;
+        }
+
+        try {
+            marks = Double.parseDouble(marksText);
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid input. Marks should be double");
+            return 0;
+        }
 
         double roundedUpMarks = Math.ceil(marks);
 

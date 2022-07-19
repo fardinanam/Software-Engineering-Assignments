@@ -352,30 +352,28 @@ class GraderTest {
 
     ////////// Non-number input //////////
     @Test
-    void nonNumberValueForCreditShouldThrowIllegalArgumentException() {
+    void nonNumberValueForCreditShouldNotThrowNumberFormatException() {
+        char expected = '\0';
+        char actual;
+
         try {
-            char grade = grader.letterGrade("a", "400.1");
-            fail("should have gotten IllegalArgumentException\n" +
-                    " but instead got " + grade + "\n");
-        } catch (Exception e) {
-            if(!(e instanceof IllegalArgumentException)) {
-                fail("should have gotten IllegalArgumentException\n" +
-                        " but instead got " + e + "\n");
-            }
+            actual = grader.letterGrade("a", "400.1");
+        } catch (NumberFormatException e) {
+            fail("should have gotten " +
+                    expected + "\n" + " but instead got " + e + "\n");
         }
     }
 
     @Test
-    void nonNumberValueForMarksShouldThrowIllegalArgumentException() {
+    void nonNumberValueForMarksShouldNotThrowNumberFormatException() {
+        char expected = '\0';
+        char actual;
+
         try {
-            char grade = grader.letterGrade("3", "400.1a");
-            fail("should have gotten IllegalArgumentException\n" +
-                    " but instead got " + grade + "\n");
-        } catch (Exception e) {
-            if(!(e instanceof IllegalArgumentException)) {
-                fail("should have gotten IllegalArgumentException\n" +
-                        " but instead got " + e + "\n");
-            }
+            actual = grader.letterGrade("3", "400.1a");
+        } catch (NumberFormatException e) {
+            fail("should have gotten " +
+                expected + "\n" + " but instead got " + e + "\n");
         }
     }
 
